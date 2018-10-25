@@ -1,6 +1,6 @@
 {
   const init = () => {
-    console.log(`game started`);
+    console.log(`game`);
   };
   init();
 }
