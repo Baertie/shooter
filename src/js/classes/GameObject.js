@@ -1,12 +1,24 @@
 import Vector from './Vector.js';
+import { throws } from 'assert';
 export default class GameObject{
-    constructor(x,y){
+    constructor(x,y,image){
         this.location = new Vector(x,y);
-        this.velocity = new Vector(random(-1,1),random(-1,1));
-        this.acceleration = new Vector(0,0.05);
+        this.image = image;
+        this.size = this.image.height;
+        this.frameRate = 60;
+        this.frameNr = 0;
+        this.localFrameNr = 0;
+        this.numFrames = 1;
+    }
+    update(){
+        this.frameNr ++;
+        this.localFrameNr = Math.floor(this.frameNr/(60/this.frameRate));
+        this.localFrameNr = this.localFrameNr%this.numFrames;
     }
     draw(ctx){
-        this.velocity.add(this.acceleration);
-        this.location.add(this.velocity);
+        ctx.save();
+        ctx.translate(this.location.x, this.location.y);
+        ctx.drawImage(this.image, this.localFrameNr * this.size,0,this.size, this.size, -this.size/2,-this.size/2,this.size, this.size);
+        ctx.restore();
     }
 }
